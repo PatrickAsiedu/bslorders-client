@@ -1,31 +1,35 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Input = (props) => {
   const [viewPassword, setViewPassword] = useState(false);
 
-  const onViewPasswordHandler =() => {
-    setViewPassword(prev=>!prev)
+  const onViewPasswordHandler = () => {
+    setViewPassword((prev) => !prev);
   };
-
 
   return (
     <div>
       <div className="flex justify-between">
-        <label className=" text-base font-normal" htmlFor={props.id}>
+        <label className=" text-sm font-medium" htmlFor={props.id}>
           {props.label}
         </label>
-        {props.type === "password" && (
-          <a className={`${props.forgotpasswordlink}  ${"text-links"}`} href="">
-            Forgot Password ?
-          </a>
-        )}
       </div>
       <div className="relative">
         <input
-          className={`${props.style}`}
-          type={props.type === 'password' ? ( viewPassword ? 'text' : 'password'  ) : props.type} 
+          className={`${props.styling}`}
+          type={
+            props.type === "password"
+              ? viewPassword
+                ? "text"
+                : "password"
+              : props.type
+          }
           placeholder={props.placeholder}
           name={props.name}
+          // pattern={props.type === 'text' && '[0]{1}[0-9]{9}'}
+          pattern={props?.pattern}
+          title={props.title}
           onChange={props.onChange}
           value={props.value}
           required

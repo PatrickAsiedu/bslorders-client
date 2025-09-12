@@ -11,8 +11,19 @@
 
 }
 
-#hey:checked{
+
+
+.check_me:checked{
     @apply bg-[url('/src/assets/Vector.svg')] border-0;
+}
+
+/* .check_me{
+    background:  url('/src/assets/Vector.svg') !important
+} */
+
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 
@@ -46,3 +57,8 @@
     height: calc(100% - 200px);
 
 }
+
+.active-link{
+    background-color: #002C59;
+}
+

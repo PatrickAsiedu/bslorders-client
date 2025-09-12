@@ -8,6 +8,8 @@ const initialState = {
   isLoggedIn: false,
   myOrders: {},
   currentMenu: {},
+  currentOrder: {},
+  showHamburger: false,
 };
 
 export const logInUser = createAsyncThunk("user/login", async (userData) => {
@@ -19,7 +21,6 @@ export const logInUser = createAsyncThunk("user/login", async (userData) => {
       token: response.data.data.token,
       user: response.data.data.user,
     };
-
     return data;
   } catch (error) {
     // console.log(error.response);
@@ -53,13 +54,13 @@ export const signUpUser = createAsyncThunk("user/signup", async (userData) => {
 export const getMyOrders = createAsyncThunk("user/getOrders", async () => {
   try {
     const response = await API.get("/order");
-    return response.data;
+    return { status: response.status, data: response.data };
   } catch (error) {
     console.log(error.response);
     const data = {
       status: error.response.status,
       errorMessage:
-        error.response.data.error.message ||
+        error.response.data.message ||
         error.response.data.error[0].message,
     };
     return data;
@@ -67,7 +68,8 @@ export const getMyOrders = createAsyncThunk("user/getOrders", async () => {
 });
 
 export const getMenu = createAsyncThunk("user/getmenu", async (menuDate) => {
-  console.log(menuDate);
+  console.log('menu date from useSlice: ', menuDate);
+  // const queryString = menuDate !== undefined ?  `/menu?menu_date=${menuDate}` : '/menu'
   try {
     const response = await API.get(`/menu?menu_date=${menuDate}`);
     const data = { status: response.status, data: response.data.data };
@@ -84,6 +86,24 @@ export const getMenu = createAsyncThunk("user/getmenu", async (menuDate) => {
   }
 });
 
+export const getCurrentMenu = createAsyncThunk("users/getCurrentMenu", async() => {
+  try{
+    const response = await API.get('/menu');
+    // console.log(response)
+    return {status: response.status, data: response.data.data}
+  }catch (error){
+    console.log(error.response)
+    const data = {
+      status: error.response.status,
+      errorMessage:
+        error.response.data.message || error.response.data.error[0].message,
+      date: error.response.data.date,
+    };
+    return data;
+    
+  }
+})
+
 export const orderLunch = createAsyncThunk("user/order", async (orderData) => {
   try {
     const response = await API.post("/order", orderData);
@@ -95,10 +115,22 @@ export const orderLunch = createAsyncThunk("user/order", async (orderData) => {
       status: error.response.status,
       errorMessage:
         error.response.data.message || error.response.data.error[0].message,
+      order: error.response.data?.order,
     };
     return data;
   }
 });
+
+export const updateLunch = createAsyncThunk('user/updateLunch', async(orderData)=>{
+  try {
+    const response = await API.put("/order", orderData);
+    // console.log(response)
+    return {status: response.status, data: response.data}
+  } catch (error) {
+    // console.log(error.response)
+    return { status: error.response.status,  data: error.response.data }
+  }
+})
 
 const userSlice = createSlice({
   name: "user",
@@ -115,6 +147,9 @@ const userSlice = createSlice({
       state.status = "User logged out";
       localStorage.clear();
       state.isLoggedIn = false;
+    },
+    toggleHamburger: (state) => {
+      state.showHamburger = !state.showHamburger;
     },
     // getUserType : (state) => {
     //     console.log('get user type', state)
@@ -151,27 +186,46 @@ const userSlice = createSlice({
 
     // order
     builder.addCase(getMyOrders.fulfilled, (state, action) => {
-      state.myOrders = action.payload.data;
+      console.log(action.payload)
+      if(action.payload.status === 200){
+        state.myOrders = action.payload.data.data;
+      }else {
+        state.myOrders = null
+      }
+      
     });
 
     // menu this is redundant
     builder.addCase(getMenu.fulfilled, (state, action) => {
-      console.log(action.payload.status);
+      // console.log(action.payload.status);
       if (action.payload.status === 200) {
         state.currentMenu = action.payload.data;
+        state.currentOrder = action.payload.user_order
       } else {
-        console.log(action.payload);
+        // state.currentMenu = action.payload
+        // console.log(action.payload);
       }
     });
     builder.addCase(getMenu.pending, (state, action) => {
-      console.log("get menu request still pending");
+      // console.log("get menu request still pending");
     });
     builder.addCase(getMenu.rejected, (state, action) => {
       console.log(action.payload);
     });
+
+    builder.addCase(getCurrentMenu.fulfilled, (state, action) => {
+      console.log(action.payload)
+      if(action.payload.status === 200){
+        state.currentMenu = action.payload.data;
+        state.currentOrder = action.payload.user_order
+        console.log(action.payload.user_order)
+      }
+    })
+
   },
 });
 
-export const { setCurrentUser, logOutCurrentUser } = userSlice.actions;
+export const { setCurrentUser, logOutCurrentUser, toggleHamburger } =
+  userSlice.actions;
 
 export default userSlice.reducer;

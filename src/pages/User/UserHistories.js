@@ -1,48 +1,62 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import ProfilePic from "../../assets/unsplash_WNoLnJo7tS8.png";
+import React, { useState, useEffect } from "react";
+
 import UserSideBarNav from "../../components/UserSideBarNav";
-import Profile from "../../components/UI/Profile";
+
+import UserTitlebar from "../../components/Usertitle bar/Usertitlebar";
+import { useDispatch } from "react-redux";
+
+import UserOrderHistoryTable from "../../components/Cards/UserOrderHistoryTable";
+import OrderHistoryCard from "../../components/Cards/OrderHistoryCard";
+import { getMyOrders } from "../../redux/userSlice";
+import { sortByDate } from "../../utils/util-functions";
+
+import { formatDateToDateString } from "../../utils/util-functions";
 
 const UserHistories = () => {
-  const orders = useSelector((state) => state.user.myOrders);
-  console.log(orders);
+  const dispatch = useDispatch();
+  const [orders, setOrders] = useState();
+  const [error, setError] = useState();
 
+  useEffect(() => {
+    const getOrders = async () => {
+      const response = await dispatch(getMyOrders()).unwrap();
+      //  console.log(response)
+      if (response.status === 200) {
+        setOrders(response.data.data);
+        const data = [...response.data.data];
+        setOrders(sortByDate(data));
+      } else {
+        setError("No orders found");
+        setOrders(null);
+      }
+    };
+
+    getOrders();
+  }, [dispatch]);
+
+  console.log(orders);
+  console.log(error);
   return (
     <React.Fragment>
-      <div className=" lg:flex h-screen ">
+      <div className=" px-4  sm:flex sm:pr-0 lg:px-0 lg:flex h-screen ">
         <UserSideBarNav />
 
-        <main className="hidden lg:flex flex-col md:ml-[30%] 2xl:ml-[20%]  w-[70%]  2xl:w-[80%] ">
-          <div className="relative mt-6 w-full h-16 ">
-            <Profile></Profile>
-          </div>
+        <main className="lg:flex lg:flex-col sm:w-[90%] sm:ml-[10%]  lg:px-0 lg:ml-[30%] 2xl:ml-[20%]  lg:w-[70%]  2xl:w-[80%] sm:px-8 ">
+          <UserTitlebar title="Your Order History"></UserTitlebar>
 
-          <h3 className="text-center">User Order Histories</h3>
-
-          <div className="w-full h-[400px] box-outer-shadow mt-12 rounded-3xl px-5 ">
-            <div className="w-full pt-9 flex justify-evenly h-[72px] py-7  grid grid-cols-5">
-              <h1>Food Choice</h1>
-              <h1>Drink Choice</h1>
-              <h1>Comments</h1>
-              <h1>Menu Date</h1>
-              <h1>Ordered on</h1>
-            </div>
-            {Object.keys(orders).length === 0 && "No orders found for user"}
-
-            {orders.map((order) => (
-              <div
-                className="w-full mt-6 bg-primary/10  grid grid-cols-5 text-sm"
+          <UserOrderHistoryTable />
+          {orders &&
+            orders.map((order) => (
+              <OrderHistoryCard
                 key={order.id}
-              >
-                <h1>{order.food_name}</h1>
-                <h1>{order.drink_name}</h1>
-                <h1>{order.comment}</h1>
-                <h1>{order.menu_date.split("T")[0]}</h1>
-                <h1>{order.created_at.split("T")[0]}</h1>
-              </div>
+                foodname={order.food_name}
+                drinkname={order.drink_name}
+                comment={order.comment || "no comment"}
+                date={formatDateToDateString(order.created_at).slice(0, -4)}
+              />
             ))}
-          </div>
+
+          <div className=" pt-[120px]"></div>
         </main>
       </div>
     </React.Fragment>

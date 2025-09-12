@@ -3,12 +3,11 @@ import { useSelector } from "react-redux";
 
 const Profile = () => {
   const name = useSelector((state) => state.user.user.name);
-  const initial = name[0];
+  let initials = name[0];
+
   return (
-    <div className="w-[62px] h-[62px] bg-checkbox rounded-full absolute right-8">
-      <span className=" font-semibold text-2xl text-primary absolute top-4 left-6">
-        {initial}
-      </span>
+    <div className="hidden sm:flex lg:flex bg-checkbox h-[40px] w-[40px] rounded-full  justify-center items-center">
+      <span className=" font-semibold text-xl text-primary">{initials}</span>
     </div>
   );
 };
