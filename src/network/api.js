@@ -1,18 +1,15 @@
 import axios from "axios";
 
-
 let baseUrl;
 
 process.env.NODE_ENV === "development"
   ? (baseUrl = "http://localhost:3001/api")
-  : (baseUrl = "https://bsl-foodapp-backend.herokuapp.com/api");
+  : (baseUrl = "https://bslorders-server.onrender.com/api");
 
 // Set config defaults when creating the instance
 const instance = axios.create({
-  baseURL: baseUrl
+  baseURL: baseUrl,
 });
-
-
 
 //   check if there is a valid token in the localstorage
 const token = localStorage.getItem("user_token");
