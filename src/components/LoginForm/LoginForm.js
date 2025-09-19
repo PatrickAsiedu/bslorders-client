@@ -12,17 +12,32 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [logInError, setLogInError] = useState("");
+  const [validationErrors, setValidationErrors] = useState({});
+
+  const validate = () => {
+    const errors = {};
+    if (!/^[0][0-9]{9}$/.test(phone_number)) {
+      errors.phone_number = "Phone number must start with 0 and be 10 digits.";
+    }
+    if (!password) {
+      errors.password = "Password is required.";
+    }
+    return errors;
+  };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    setIsLoggingIn(true);
     setLogInError("");
+    const errors = validate();
+    setValidationErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+    setIsLoggingIn(true);
     const response = await dispatch(
       logInUser({ phone_number, password })
     ).unwrap();
-    // console.log(response)
     if (response.status === 202) {
-      console.log(response);
       setIsLoggingIn(false);
       if (response.user.type === "user") {
         window.location.href = "/me";
@@ -31,9 +46,7 @@ const LoginForm = () => {
       } else if (response.user.type === "admin") {
         window.location.href = "/admin";
       }
-      // navigate('/me/order')   //remember to change to /me
     } else {
-      // theres an error, diplay the message
       setLogInError(response.errorMessage);
       setIsLoggingIn(false);
     }
@@ -47,32 +60,40 @@ const LoginForm = () => {
       <h1 className=" text-2xl font-semibold text-center mt-[40px] mb-[27px]">
         Nice to see you here
       </h1>
-      <Input
-        styling={
-          "w-full border mt-[22px] mb-[21px] h-[61px] pl-6 outline-links "
-        }
-        label="Phone Number"
-        placeholder="Enter Phone Number"
-        id="Phone Number"
-        type="text"
-        title="Enter a valid phone number starting with 0 and of length 10"
-        pattern="[0]{1}[0-9]{9}"
-        name="phone_number"
-        value={phone_number}
-        onChange={(e) => setPhoneNumber(e.target.value)}
-      />
-      <Input
-        styling={"w-full border mt-[22px]  h-[61px] pl-6 outline-links "}
-        label="Password"
-        placeholder="Enter Password"
-        id="Pasword"
-        type="password"
-        title="Enter password"
-        name="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        ss
-      />
+ <div className="space-y-4 w-full">
+        <Input
+          styling={
+            "w-full border mt-[22px]  h-[61px] pl-6 outline-links "
+          }
+          label="Phone Number"
+          placeholder="Enter Phone Number"
+          id="Phone Number"
+          type="text"
+          title="Enter a valid phone number starting with 0 and of length 10"
+          name="phone_number"
+          value={phone_number}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+        {validationErrors.phone_number && (
+          <p className="text-red-500 text-md mt-1">
+            {validationErrors.phone_number}
+          </p>
+        )}
+        <Input
+          styling={"w-full border mt-[22px]  h-[61px] pl-6 outline-links "}
+          label="Password"
+          placeholder="Enter Password"
+          id="Pasword"
+          type="password"
+          title="Enter password"
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+ </div>
+      {validationErrors.password && (
+        <p className="text-red-500 text-md mt-1">{validationErrors.password}</p>
+      )}
       <div className="flex justify-between mt-[38px] text-sm ">
         <div className="flex  items-center">
           <ToggleSwitch />

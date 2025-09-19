@@ -17,17 +17,35 @@ const SignupForm = () => {
   const [formError, setFormError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [formhasError, setFormHasError] = useState("");
+  const [validationErrors, setValidationErrors] = useState({});
 
   const signupFormHanlder = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    // console.log(form)
+  };
+
+  const validate = () => {
+    const errors = {};
+    if (!form.name.trim()) {
+      errors.name = "Name is required.";
+    }
+    if (!/^[0][0-9]{9}$/.test(form.phone_number)) {
+      errors.phone_number = "Phone number must start with 0 and be 10 digits.";
+    }
+    if (!form.password) {
+      errors.password = "Password is required.";
+    }
+    return errors;
   };
 
   const submitFormHanlder = async (e) => {
     setFormError("");
     e.preventDefault();
+    const errors = validate();
+    setValidationErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
     setIsSigningUp(true);
-    console.log(form);
     // make the api calls
     const response = await dispatch(signUpUser(form)).unwrap();
     if (response.errorMessage) {
@@ -67,6 +85,9 @@ const SignupForm = () => {
         value={form.name}
         onChange={signupFormHanlder}
       />
+      {validationErrors.name && (
+        <p className="text-red-500 text-md mt-1">{validationErrors.name}</p>
+      )}
       <Input
         styling={
           "w-full border mt-[22px] mb-[21px] h-[61px] pl-6 outline-links "
@@ -78,9 +99,12 @@ const SignupForm = () => {
         name="phone_number"
         value={form.phone_number}
         onChange={signupFormHanlder}
-        pattern="[0]{1}[0-9]{9}"
-        title="Enter a valid phone number starting with 0 and of length 10"
       />
+      {validationErrors.phone_number && (
+        <p className="text-red-500 text-md mt-1">
+          {validationErrors.phone_number}
+        </p>
+      )}
       <Input
         forgotpasswordlink={"hidden"}
         styling={"w-full border mt-[22px]  h-[61px] pl-6   outline-links"}
@@ -92,6 +116,9 @@ const SignupForm = () => {
         value={form.password}
         onChange={signupFormHanlder}
       />
+      {validationErrors.password && (
+        <p className="text-red-500 text-md mt-1">{validationErrors.password}</p>
+      )}
 
       {/* jon added this to display error messages */}
       {formhasError && (

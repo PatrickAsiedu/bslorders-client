@@ -27,12 +27,10 @@ const Input = (props) => {
           }
           placeholder={props.placeholder}
           name={props.name}
-          // pattern={props.type === 'text' && '[0]{1}[0-9]{9}'}
-          pattern={props?.pattern}
           title={props.title}
           onChange={props.onChange}
           value={props.value}
-          required
+   
         />
         {props.type === "password" && (
           <button type="button" onClick={onViewPasswordHandler}>
