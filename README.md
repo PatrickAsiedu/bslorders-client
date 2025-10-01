@@ -1,70 +1,72 @@
-# Getting Started with Create React App
+# BSLOrders
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+BSLOrders is a modern web application for managing lunch orders at Broadspectrum Ltd. Built with React, Redux, and Tailwind CSS, it provides a seamless experience for users, chefs, and administrators to place, manage, and review daily food and drink orders.
 
-In the project directory, you can run:
+## Motivation
 
-### `npm start`
+At Broadspectrum, where all employees are entitled to lunch, the use of Microsoft Forms for order placement resulted in tampered orders, increased company costs, and added complexity for chefs. BSLOrders is an authenticated web-based application designed to reduce company costs by preventing unauthorized orders, ensuring order accuracy for employees, and simplifying the process for chefs, thereby improving efficiency and user experience.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Quick Start
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Visit the Live Demo OR Skip to Installation Guide
 
-### `npm test`
+You can access the live demo version of BSLOrders here:  
+[https://bslorders-client.vercel.app](https://bslorders-client.vercel.app/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Installation Guide
 
-### `npm run build`
+### Clone repository
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+git clone https://github.com/PatrickAsiedu/bslorders-client.git
+cd bslorders-client
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```sh
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Start Development Server
 
-### `npm run eject`
+```sh
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Setup Server
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+You can find the backend/server code here:  
+[https://github.com/PatrickAsiedu/bslorders-server](https://github.com/PatrickAsiedu/bslorders-server)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Usage
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Features
 
-## Learn More
+- **User Dashboard:** Place lunch orders, view order history, and manage account details.
+- **Chef Dashboard:** View daily orders, manage menus, add/edit foods and drinks.
+- **Admin Dashboard:** Approve user signups, reset passwords, manage users, and view order summaries.
+- **Responsive UI:** Optimized for desktop and mobile devices.
+- **Role-Based Access:** Separate interfaces for users, chefs, and admins.
+- **CSV Export:** Download order summaries for reporting.
+- **Notifications:** Real-time feedback for actions and approvals.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Tech Stack
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **React** for UI
+- **Redux** for state management ([src/redux](src/redux))
+- **Tailwind CSS** for styling ([tailwind.config.js](tailwind.config.js))
+- **Axios** for API requests ([src/network/api.js](src/network/api.js))
+- **SweetAlert2** for notifications ([src/utils/util-functions.js](src/utils/util-functions.js))
 
-### Code Splitting
+### Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `src/` - Main source code
+  - `components/` - Reusable UI components
+  - `pages/` - Application pages (User, Chef, Admin)
+  - `redux/` - State management
+  - `network/` - API configuration
+  - `utils/` - Utility functions
+  - `assets/` - Images and static assets
+- `public/` - Static files and HTML template
+- `build/` - Production build output
