@@ -158,7 +158,7 @@ const UserEditOrder = () => {
               Comments
             </label>
             <textarea
-              className="bg-primary/80 mt-[18px] rounded-lg h-[164px] text-white px-4 pt-4  text-sm  border-primary border-2 outline-white"
+              className="bg-primary/10 mt-[18px] rounded-lg h-[164px] text-primary px-4 pt-4  text-sm  border-primary border-2 outline-white"
               name="comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}

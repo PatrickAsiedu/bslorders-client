@@ -12,7 +12,7 @@ const CustomRadioBox = (props) => {
     <div
       className={
         props.selected
-          ? "bg-primary/10 relative  mt-[18px] flex  items-center  py-[18px]  rounded-lg pl-10 hover:cursor-pointer transition-all"
+          ? "bg-primary/10 relative  mt-[18px] flex  items-center  py-[18px]   rounded-lg pl-10 hover:cursor-pointer transition-all"
           : "relative  mt-[18px] flex  items-center  py-[18px]  rounded-lg pl-5 hover:cursor-pointer"
       }
       onClick={onSelectHandler}
@@ -26,7 +26,7 @@ const CustomRadioBox = (props) => {
         // onClick={(e) => setFood(e.target.id)}
       />
       <label
-        className={props.selected ? "text-white ml-[14px]" : "ml-[14px]"}
+        className={props.selected ? "text-primary ml-[14px]" : "ml-[14px]"}
         htmlFor="hey"
       >
         {props.children}
