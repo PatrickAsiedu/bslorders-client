@@ -12,7 +12,7 @@ const CustomRadioBox = (props) => {
     <div
       className={
         props.selected
-          ? "bg-primary relative  mt-[18px] flex  items-center  py-[18px]  rounded-lg pl-10 hover:cursor-pointer transition-all"
+          ? "bg-primary/10 relative  mt-[18px] flex  items-center  py-[18px]  rounded-lg pl-10 hover:cursor-pointer transition-all"
           : "relative  mt-[18px] flex  items-center  py-[18px]  rounded-lg pl-5 hover:cursor-pointer"
       }
       onClick={onSelectHandler}
